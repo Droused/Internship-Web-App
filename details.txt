@@ -1,0 +1,10 @@
+InternshipsForYou.fyi
+
+Server -
+
+API Fetching (Name, Role, Location, Application/Link, Date Posted)
+
+
+
+Frontend -
+
