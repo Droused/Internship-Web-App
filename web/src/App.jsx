@@ -1,25 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import InternshipList from "./Components/InternshipList";
 
 function App() {
-  const internships = [
-    {
-      companyName: "Company A",
-      locationState: "New York",
-      locationCity: "NYC",
-      role: "Role A",
-      datePosted: "2023-09-18",
-      applicationLink: "https://example.com/apply-a",
-    },
-    {
-      companyName: "Company B",
-      locationState: "Texas",
-      locationCity: "Houston",
-      role: "Role B",
-      datePosted: "2023-09-19",
-      applicationLink: "https://example.com/apply-b",
-    },
-  ];
+  const [internships, setInternships] = useState([]);
+
+  useEffect(() => {
+    // Replace with the correct URL of your server's endpoint
+    const serverEndpoint = "http://localhost:5173/simplifyjobs";
+
+    // Fetch data from your server
+    fetch(serverEndpoint)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch data.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Set the fetched data in the state
+        setInternships(data);
+        console.log(data)
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
 
   return (
     <div className="container mx-auto p-6">

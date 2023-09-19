@@ -14,7 +14,7 @@ const InternshipList = ({ internships }) => {
                 Company
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left text-sm font-semibold">
-                Location
+                Location(s)
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left text-sm font-semibold">
                 Date Posted
@@ -32,23 +32,29 @@ const InternshipList = ({ internships }) => {
               >
                 <td className="px-6 py-4 border-b border-gray-300">
                   <div className="text-sm font-semibold text-gray-900">
-                    {internship.companyName}
+                    {internship.Company}
                   </div>
-                  <div className="text-xs text-gray-500">{internship.role}</div>
+                  <div className="text-xs text-gray-500">{internship.Role}</div>
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300">
                   <div className="text-sm font-semibold text-gray-900">
-                    {internship.locationCity}, {internship.locationState}
+                    {internship.Location && internship.Location.length > 0 ? (
+                      internship.Location.map((location, idx) => (
+                        <div key={idx}>{location}</div>
+                      ))
+                    ) : (
+                      "N/A"
+                    )}
                   </div>
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300">
                   <div className="text-sm text-gray-500">
-                    {internship.datePosted}
+                    {internship.DatePosted}
                   </div>
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300">
                   <a
-                    href={internship.applicationLink}
+                    href={internship.ApplicationLink}
                     className="text-blue-600 hover:underline"
                   >
                     Apply
