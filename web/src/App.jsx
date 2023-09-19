@@ -5,10 +5,8 @@ function App() {
   const [internships, setInternships] = useState([]);
 
   useEffect(() => {
-    // Replace with the correct URL of your server's endpoint
     const serverEndpoint = "http://localhost:5173/simplifyjobs";
 
-    // Fetch data from your server
     fetch(serverEndpoint)
       .then((response) => {
         if (!response.ok) {
@@ -17,7 +15,6 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        // Set the fetched data in the state
         setInternships(data);
         console.log(data)
       })

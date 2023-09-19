@@ -18,7 +18,6 @@ export const GET = async ({ request, url }) => {
 
 				if (values.length >= 5) {
 					let locations = values[2].trim().split('</br>');
-					// Remove '<details><summary>' and '</summary>' tags from locations
 					locations = locations.map((location) =>
 						location.replace(/<details><summary>|<\/summary>/g, '')
 					);
@@ -26,7 +25,6 @@ export const GET = async ({ request, url }) => {
 					let link = values[3].trim().split('href="')[1];
 
 					if (link) {
-						// Remove '<a ...><img ...>' tags from the link
 						link = link.replace(/<a [^>]*><img [^>]*>/g, '');
 					}
 
@@ -36,7 +34,7 @@ export const GET = async ({ request, url }) => {
 						Company: companyName,
 						Role: values[1].trim(),
 						Location: locations,
-						ApplicationLink: link || '', // Set to empty string if link is undefined
+						ApplicationLink: link || '',
 						DatePosted: values[4].trim()
 					};
 					data.push(rowData);
