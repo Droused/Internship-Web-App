@@ -7,7 +7,7 @@ const InternshipList = ({ internships }) => {
         Recent Listings
       </h1>
       <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse rounded-lg overflow-hidden">
+        <table className="min-w-full table-auto border-collapse rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-gradient-to-r from-blue-600 to-blue-400 text-white">
               <th className="px-6 py-3 border-b border-gray-300 text-left text-sm font-semibold">

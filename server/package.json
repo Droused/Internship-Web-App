@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"node-fetch": "^3.3.2",
 		"parse-md": "^3.0.3"
 	}
 }

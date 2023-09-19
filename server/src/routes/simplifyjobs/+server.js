@@ -1,64 +1,76 @@
 export const GET = async ({ request, url }) => {
-	const parseMarkdownTable = (markdownText) => {
-		const lines = markdownText.trim().split('\n');
-		const data = [];
-		let isDataSection = false;
+    const parseMarkdownTable = (markdownText) => {
+        const lines = markdownText.trim().split('\n');
+        const data = [];
+        let isDataSection = false;
 
-		for (const line of lines) {
-			if (line.includes('| --- |')) {
-				isDataSection = true;
-				continue;
-			}
+        for (const line of lines) {
+            if (line.includes('| --- |')) {
+                isDataSection = true;
+                continue;
+            }
 
-			if (isDataSection && line.includes('|')) {
-				const values = line
-					.split('|')
-					.map((item) => item.trim())
-					.filter((item) => item !== '');
+            if (isDataSection && line.includes('|')) {
+                const values = line
+                    .split('|')
+                    .map((item) => item.trim())
+                    .filter((item) => item !== '');
 
-				if (values.length >= 5) {
-					let locations = values[2].trim().split('</br>');
-					locations = locations.map((location) =>
-						location.replace(/<details><summary>|<\/summary>/g, '')
-					);
+                if (values.length >= 5) {
+                    let locations = values[2].trim().split('</br>');
+                    locations = locations.map((location) =>
+                        location
+                            .replace(/<details><summary>.*?<\/summary>/g, '')
+                            .replace(/<\/details>/g, '')
+                            .trim()
+                    );
 
-					let link = values[3].trim().split('href="')[1];
+                    let link = values[3].trim().split('href="')[1];
 
-					if (link) {
-						link = link.replace(/<a [^>]*><img [^>]*>/g, '');
-					}
+                    if (link) {
+                        link = link.replace(/<a [^>]*><img [^>]*>/g, '');
+                    }
 
-					const companyMatch = values[0].match(/\[(.*?)\]/);
-					const companyName = companyMatch ? companyMatch[1] : values[0];
-					const rowData = {
-						Company: companyName,
-						Role: values[1].trim(),
-						Location: locations,
-						ApplicationLink: link || '',
-						DatePosted: values[4].trim()
-					};
-					data.push(rowData);
-				}
-			}
-		}
+                    let companyName = values[0].trim(); // Get the company name as is
 
-		return data;
-	};
+                    // Remove ** from the company name if present
+                    companyName = companyName.replace(/\*\*/g, '');
 
-	try {
-		const res = await fetch(
-			'https://raw.githubusercontent.com/SimplifyJobs/Summer2024-Internships/dev/README.md'
-		);
+                    // If the company name is in the format [name](...), extract it
+                    const companyMatch = companyName.match(/\[(.*?)\]\(.*?\)/);
+                    if (companyMatch) {
+                        companyName = companyMatch[1];
+                    }
 
-		if (!res.ok) {
-			throw new Error('Failed to fetch data.');
-		}
+                    const rowData = {
+                        Company: companyName,
+                        Role: values[1].trim(),
+                        Location: locations,
+                        ApplicationLink: link || '',
+                        DatePosted: values[4].trim(),
+                    };
+                    data.push(rowData);
+                }
+            }
+        }
 
-		const markdownText = await res.text();
-		const data = parseMarkdownTable(markdownText);
+        return data;
+    };
 
-		return new Response(JSON.stringify(data), { status: 200 });
-	} catch (error) {
-		return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-	}
+    try {
+        const res = await fetch(
+            'https://raw.githubusercontent.com/SimplifyJobs/Summer2024-Internships/dev/README.md'
+        );
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch data.');
+        }
+
+        const markdownText = await res.text();
+        const data = parseMarkdownTable(markdownText);
+
+        return new Response(JSON.stringify(data), { status: 200 });
+    } catch (error) {
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    }
 };
