@@ -4,10 +4,9 @@ import InternshipList from "./Components/InternshipList";
 
 function App() {
   const [internships, setInternships] = useState([]);
-  const isTextVisible = internships.length > 0;
 
   useEffect(() => {
-    const serverEndpoint = "http://localhost:5173/simplifyjobs";
+    const serverEndpoint = "http://localhost:5174/simplifyjobs";
 
     fetch(serverEndpoint)
       .then((response) => {
