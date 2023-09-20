@@ -31,12 +31,10 @@ export const GET = async ({ request, url }) => {
                         link = link.replace(/<a [^>]*><img [^>]*>/g, '');
                     }
 
-                    let companyName = values[0].trim(); // Get the company name as is
+                    let companyName = values[0].trim();
 
-                    // Remove ** from the company name if present
                     companyName = companyName.replace(/\*\*/g, '');
 
-                    // If the company name is in the format [name](...), extract it
                     const companyMatch = companyName.match(/\[(.*?)\]\(.*?\)/);
                     if (companyMatch) {
                         companyName = companyMatch[1];

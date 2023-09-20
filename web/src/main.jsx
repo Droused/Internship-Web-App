@@ -1,10 +1,46 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { Auth } from "./routes/auth";
+import ForgotPassword from "./routes/forgotPasswordPage";
+import Register from "./routes/RegisterPage";
+import "./index.css";
+import Login from "./routes/auth";
+import Main from "./routes/main";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Main />
+    )
+  },
+  {
+    path: "/login",
+    element: (
+      <Login />
+    )
+  },
+  {
+    path: "/register",
+    element: (
+      <Register />
+    )
+  },
+  {
+    path: "/forgot-password",
+    element:(
+      <ForgotPassword />
+    )
+  }
+]);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
