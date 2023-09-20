@@ -41,12 +41,6 @@ const Register = () => {
       console.log(err);
     }
   };
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      window.location.href = "/";
-    } else {
-    }
-  });
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 w-full">

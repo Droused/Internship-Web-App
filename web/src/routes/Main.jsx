@@ -10,7 +10,6 @@ import {
 
 const Main = () => {
   const [internships, setInternships] = useState([]);
-  const [simpleuser, setUser] = useState(null);
 
   useEffect(() => {
     const serverEndpoint = "http://localhost:5174/simplifyjobs";
@@ -33,14 +32,27 @@ const Main = () => {
 
   const auth = getAuth();
   const user = auth.currentUser;
+  const email = ""
+
+  if(auth.currentUser.email != null) {
+    const email = auth.currentUser.email;
+  }
+  else{
+    const email = "";
+  }
+
+
+  user.photoURL = `https://ui-avatars.com/api/?name=${email[0]}&&background=random`
   if (user) {
-        console.log("Logged in!")
+    
   } else {
     <Login></Login>
   }
   return (
     <div className="container mx-auto p-6">
+      <img src={user.photoURL} alt="" />
       <h1 className="text-4xl font-bold text-center mb-6">InternshipsForYou</h1>
+
       <div className="flex justify-center">
         <input
           type="text"

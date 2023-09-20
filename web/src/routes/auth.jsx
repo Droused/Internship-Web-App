@@ -11,14 +11,13 @@ import { toast, Toaster } from 'react-hot-toast'
 export const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState("");
 
   const signIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log("User signed in");
         const user = userCredential.user;
-        window.location.href = "/"
-
       })
       .catch((error) => {
         console.error("Error signing in:", error);
@@ -39,12 +38,10 @@ export const Auth = () => {
     }
   };
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      window.location.href = "/"  
-    } else {
-    }
-  });
+  if(setUser){
+    window.location.href="/"
+  }
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 w-full">
