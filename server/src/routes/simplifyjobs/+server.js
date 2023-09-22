@@ -1,5 +1,6 @@
 export const GET = async ({ request, url }) => {
     const parseMarkdownTable = (markdownText) => {
+        console.log(markdownText)
         const lines = markdownText.trim().split('\n');
         const data = [];
         let isDataSection = false;
@@ -65,8 +66,8 @@ export const GET = async ({ request, url }) => {
         }
 
         const markdownText = await res.text();
+        console.log(markdownText)
         const data = parseMarkdownTable(markdownText);
-
         return new Response(JSON.stringify(data), { status: 200 });
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
