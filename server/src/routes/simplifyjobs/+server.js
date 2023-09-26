@@ -50,8 +50,6 @@ export const GET = async ({ request, url }) => {
 				.filter((element) => /alt="Apply"/.test(element))[0]
 				?.split('href=')[1]?.split('"')[1];
 
-			// .map((link) => link.split('='))
-			// let links = values[3]?.replace('width="84"','')?.replaceAll('</a>','')?.replaceAll('<a ','')
 			data.push({
 				company: company,
 				role: values[1],
