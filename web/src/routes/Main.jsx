@@ -3,10 +3,7 @@ import InternshipList from "../Components/InternshipList";
 import Login from "../Components/Login";
 import { Auth } from "../routes/auth";
 import { auth, googleProvider } from "../config/firebase.js";
-import {
-  onAuthStateChanged,
-  getAuth
-} from "firebase/auth";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
 
 const Main = () => {
   const [internships, setInternships] = useState([]);
@@ -32,34 +29,26 @@ const Main = () => {
 
   const auth = getAuth();
   const user = auth.currentUser;
-  const email = ""
 
-  if(auth.currentUser.email != null) {
-    const email = auth.currentUser.email;
-  }
-  else{
-    const email = "";
-  }
-
-
-  user.photoURL = `https://ui-avatars.com/api/?name=${email[0]}&&background=random`
   if (user) {
-    
   } else {
-    <Login></Login>
+    <Login></Login>;
   }
   return (
-    <div className="container mx-auto p-6">
-      <img src={user.photoURL} alt="" />
-      <h1 className="text-4xl font-bold text-center mb-6">InternshipsForYou</h1>
-
-      <div className="flex justify-center">
-        <input
-          type="text"
-          className="w-full lg:w-1/2 xl:w-1/3 border rounded-md p-3 focus:outline-none focus:border-slate-600 transition duration-300"
-          placeholder="Search Company, Location, Date..."
-        />
+    <div className="container p-6 mx-auto ">
+      <div className="px-2 py-3 rounded-[25px] shadow-md bg-gradient-to-r from-blue-500 to-purple-500 flex gap-5 justify-center items-center">
+        <h1 className="flex justify-center  ml-[80px] text-4xl font-bold text-center text-white">
+          InternshipsForYou
+        </h1>
+        <div className="flex justify-center w-full p-0 m-0">
+          <input
+            type="text"
+            className=" h-[60px] p-2 transition duration-300 border rounded-[15px] shadow-md lg:w-1/2 xl:w-[500px] focus:outline-none focus:border-slate-600 focus:ring focus:ring-slate-200 focus:ring-opacity-50"
+            placeholder="Search Company, Location, Date..."
+          />
+        </div>
       </div>
+
       <div className="mt-8">
         <InternshipList internships={internships} />
       </div>
