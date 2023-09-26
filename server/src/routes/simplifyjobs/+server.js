@@ -17,24 +17,21 @@ export const GET = async ({ request, url }) => {
 		for (let i = lines.indexOf(headerSplitter) + 1; i < footerIndex; i++) {
 			let line = lines[i].trim();
 			if (line.startsWith('|')) {
-				line = line.substring(1); // Remove the leading '|' if present
+				line = line.substring(1);
 			}
 			if (line.endsWith('|')) {
-				line = line.slice(0, -1); // Remove the trailing '|' if present
+				line = line.slice(0, -1);
 			}
 			const values = line.split('|').map((value) => value.trim());
 
-			// Check if values[0] contains a Markdown link
 			let company = values[0];
 			if (company.startsWith('**[') && company.endsWith(')**')) {
-				// Extract the company name and link URL
 				const linkMatches = company.match(/\*\*\[(.*?)\]\((.*?)\)\*\*/);
 				if (linkMatches && linkMatches.length === 3) {
-					company = linkMatches[1]
+					company = linkMatches[1];
 				}
 			}
 
-			// Check if values[2] exists before using includes
 			let location =
 				values[2] && values[2].includes('</br>')
 					? values[2].split('</br>').map((loc) => loc.trim())
@@ -45,15 +42,18 @@ export const GET = async ({ request, url }) => {
 			let applicationLink = values[3]
 				?.split('</a>')
 				.filter((element) => /alt="Apply"/.test(element))[0]
-				?.split('href=')[1]?.split('"')[1];
+				?.split('href=')[1]
+				?.split('"')[1];
 
-			data.push({
-				company: company,
-				role: values[1],
-				location: location,
-				applicationLink,
-				datePosted: values[4]
-			});
+			if (company && company.trim()) {
+				data.push({
+					company: company,
+					role: values[1],
+					location: location,
+					applicationLink,
+					datePosted: values[4]
+				});
+			}
 		}
 
 		return data;
