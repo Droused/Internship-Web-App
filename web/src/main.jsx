@@ -10,6 +10,7 @@ import Register from "./routes/RegisterPage";
 import "./index.css";
 import Login from "./routes/auth";
 import Main from "./routes/main";
+import UserProfile from "./routes/UserProfile";
 
 
 const router = createBrowserRouter([
@@ -35,6 +36,12 @@ const router = createBrowserRouter([
     path: "/forgot-password",
     element:(
       <ForgotPassword />
+    )
+  },
+  {
+    path: "/profile",
+    element: (
+      <UserProfile />
     )
   }
 ]);

@@ -1,6 +1,20 @@
 import React from "react";
+import { FaStar, FaRegStar } from "react-icons/fa"; // Importing Font Awesome Icons
+import { useState } from "react";
 
 const InternshipList = ({ internships }) => {
+  const [favorites, setFavorites] = useState([]);
+
+  const handleFavoriteClick = (internship) => {
+    if (favorites.includes(internship)) {
+      setFavorites(favorites.filter(fav => fav !== internship));
+    } else {
+      setFavorites([...favorites, internship]);
+    }
+    console.log(favorites)
+  };
+
+
   return (
     <div className="container p-4 mx-auto">
       <h1 className="mb-4 text-3xl font-semibold text-center text-blue-600">
@@ -31,8 +45,20 @@ const InternshipList = ({ internships }) => {
                 className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
               >
                 <td className="px-6 py-4 border-b border-gray-300">
-                  <div className="text-sm font-semibold text-gray-900">
-                    {internship.company}
+                  <div className="flex items-center">
+                    <div className="text-sm font-semibold text-gray-900">
+                      {internship.company}
+                    </div>
+                    <button
+                      onClick={() => handleFavoriteClick(internship)}
+                      className="ml-2 focus:outline-none"
+                    >
+                      {favorites.some((fav) => fav.id === internship.id) ? (
+                        <FaStar className="text-yellow-500" />
+                      ) : (
+                        <FaRegStar className="text-gray-400 hover:text-yellow-500" />
+                      )}
+                    </button>
                   </div>
                   <div className="text-xs text-gray-500">{internship.role}</div>
                 </td>
