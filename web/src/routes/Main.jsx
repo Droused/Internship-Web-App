@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import InternshipList from "../Components/InternshipList";
-import Login from "../Components/ButtonLog";
-import { Auth } from "../routes/auth";
+import ButtonLog from "../Components/ButtonLog";
 import { auth, googleProvider } from "../config/firebase.js";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
+import { signOut, } from "firebase/auth";
+
 
 const Main = () => {
   const [internships, setInternships] = useState([]);
@@ -46,7 +47,7 @@ const Main = () => {
   return (
     <div className="container p-6 mx-auto ">
       <Toaster></Toaster>
-      <div className="px-2 py-3 rounded-[25px] shadow-md bg-gradient-to-r from-blue-500 to-purple-500 flex gap-5 justify-center items-center">
+      <div className="px-2 py-3 rounded-[25px] shadow-md bg-blue-500 flex gap-5 justify-center items-center">
         <h1 className="flex justify-center  ml-[80px] text-4xl font-bold text-center text-white">
           InternshipsForYou
         </h1>
@@ -59,9 +60,9 @@ const Main = () => {
         </div>
         <div>
           {isLoggedIn ? (
-            <button onClick={() => auth.signOut()}>Logout</button>
+            <ButtonLog text='Logout' onClick={() => signOut(auth)}></ButtonLog>
           ) : (
-            <ButtonLog />
+            <ButtonLog text='Login'/>
           )}
         </div>
       </div>
