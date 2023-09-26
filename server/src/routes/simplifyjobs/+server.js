@@ -30,10 +30,7 @@ export const GET = async ({ request, url }) => {
 				// Extract the company name and link URL
 				const linkMatches = company.match(/\*\*\[(.*?)\]\((.*?)\)\*\*/);
 				if (linkMatches && linkMatches.length === 3) {
-					company = {
-						name: linkMatches[1],
-						link: linkMatches[2]
-					};
+					company = linkMatches[1]
 				}
 			}
 
