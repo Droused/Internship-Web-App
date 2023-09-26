@@ -41,11 +41,11 @@ export const GET = async ({ request, url }) => {
 					: values[2]
 					? [values[2].trim()]
 					: [];
-			if(location.length>=4) {
-				location[0] = location[0].split("/summary>")[1]
-				location[location.length-1] = location[location.length-1].split("</details>")[0]
+			if (location.length >= 4) {
+				location[0] = location[0].split('/summary>')[1];
+				location[location.length - 1] = location[location.length - 1].split('</details>')[0];
 			}
-					let applicationLink;
+			let applicationLink;
 			if (values[3] !== '🔒') {
 				applicationLink = values[3]
 					?.split('</a>')
