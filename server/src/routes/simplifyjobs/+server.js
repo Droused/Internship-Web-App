@@ -17,34 +17,41 @@ export const GET = async ({ request, url }) => {
 		for (let i = lines.indexOf(headerSplitter) + 1; i < footerIndex; i++) {
 			let line = lines[i].trim();
 			if (line.startsWith('|')) {
-				line = line.substring(1); // Remove the leading '|' if present
+				line = line.substring(1);
 			}
 			if (line.endsWith('|')) {
-				line = line.slice(0, -1); // Remove the trailing '|' if present
+				line = line.slice(0, -1);
 			}
 			const values = line.split('|').map((value) => value.trim());
 
-			// Check if values[0] contains a Markdown link
 			let company = values[0];
 			if (company.startsWith('**[') && company.endsWith(')**')) {
-				// Extract the company name and link URL
 				const linkMatches = company.match(/\*\*\[(.*?)\]\((.*?)\)\*\*/);
 				if (linkMatches && linkMatches.length === 3) {
 					company = linkMatches[1];
 				}
 			}
 
-			// Check if values[2] exists before using includes
-			let location =
-				values[2] && values[2].includes('</br>')
-					? values[2].split('</br>').map((loc) => loc.trim())
-					: values[2]
-					? [values[2].trim()]
-					: [];
-			if (location.length >= 4) {
-				location[0] = location[0].split('/summary>')[1];
-				location[location.length - 1] = location[location.length - 1].split('</details>')[0];
+			let location = values[2] ? values[2].trim() : '';
+
+			if (/<details><summary>.*<\/summary>(.*)<\/details>/.test(location)) {
+				const matches = location.match(/<details><summary>.*<\/summary>(.*)<\/details>/);
+				if (matches && matches[1]) {
+					location = matches[1].split(/<\/br>|\n/).map((loc) => loc.trim());
+				}
+			} else if (location.includes(';')) {
+				location = location.split(';').map((loc) => loc.trim());
+			} else if (location.includes('</br>')) {
+				location = location.split('</br>').map((loc) => loc.trim());
+			} else if (/,\s[A-Z]{2}\sRemote/.test(location)) {
+				location = location
+					.replace(/,\s[A-Z]{2}\s/, ', ')
+					.split(', ')
+					.map((loc) => loc.trim());
+			} else {
+				location = location ? [location] : [];
 			}
+
 			let applicationLink;
 			if (values[3] !== '🔒') {
 				applicationLink = values[3]
@@ -55,13 +62,16 @@ export const GET = async ({ request, url }) => {
 			} else {
 				applicationLink = null;
 			}
-			data.push({
-				company: company,
-				role: values[1],
-				location: location,
-				applicationLink,
-				datePosted: values[4]
-			});
+
+			if (company && company.trim()) {
+				data.push({
+					company: company,
+					role: values[1],
+					jobLocation: location,
+					applicationLink,
+					datePosted: values[4]
+				});
+			}
 		}
 
 		return data;

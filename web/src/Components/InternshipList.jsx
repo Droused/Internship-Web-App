@@ -1,7 +1,6 @@
 import React from "react";
 
 const InternshipList = ({ internships }) => {
-
   return (
     <div className="container p-4 mx-auto">
       <h1 className="mb-4 text-3xl font-semibold text-center text-blue-600">
@@ -39,13 +38,11 @@ const InternshipList = ({ internships }) => {
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300">
                   <div className="text-sm font-semibold text-gray-900">
-                    {internship.location && internship.location.length > 0 ? (
-                      internship.location.map((location, idx) => (
-                        <div key={idx}>{location}</div>
-                      ))
-                    ) : (
-                      "N/A"
-                    )}
+                    {internship.jobLocation && internship.jobLocation.length > 0
+                      ? internship.jobLocation.map((location, idx) => (
+                          <div key={idx}>{location}</div>
+                        ))
+                      : "N/A"}
                   </div>
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300">
@@ -54,12 +51,17 @@ const InternshipList = ({ internships }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300">
-                  <a
-                    href={internship.applicationLink}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Apply
-                  </a>
+                  {internship.applicationLink ? (
+                    <a
+                      href={internship.applicationLink}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {" "}
+                      Apply{" "}
+                    </a>
+                  ) : (
+                    <p className="font-bold text-gray-600">Closed</p>
+                  )}
                 </td>
               </tr>
             ))}
