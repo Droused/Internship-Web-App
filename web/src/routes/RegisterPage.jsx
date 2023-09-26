@@ -5,7 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth, googleProvider } from "../config/firebase.js";
+import { auth, db, googleProvider } from "../config/firebase.js";
 import { toast, Toaster } from "react-hot-toast";
 
 const Register = () => {
@@ -43,13 +43,13 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 w-full">
+    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-50">
       <Toaster />
-      <div className="max-w-md w-full p-6 bg-white shadow-lg rounded-lg flex flex-col items-center space-y-4">
+      <div className="flex flex-col items-center w-full max-w-md p-6 space-y-4 bg-white rounded-lg shadow-lg">
         <img
           src="/int.png"
           alt="Company Logo"
-          className="w-20 h-20 rounded-full border-4 border-blue-500"
+          className="w-20 h-20 border-4 border-blue-500 rounded-full"
         />
         <h2 className="text-3xl font-semibold text-center">Register</h2>
         <div className="mb-4">
@@ -78,7 +78,7 @@ const Register = () => {
             required
           />
         </div>
-        <div className="mb-4 flex justify-center">
+        <div className="flex justify-center mb-4">
           <button
             onClick={signIn}
             className="w-[250px] bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
@@ -86,19 +86,19 @@ const Register = () => {
             Sign Up
           </button>
         </div>
-        <div className="mb-4 flex justify-center items-center">
+        <div className="flex items-center justify-center mb-4">
           <button
             className="w-[250px] bg-white hover:bg-gray-200 text-blue-400 font-bold py-2 px-4 rounded-md flex items-center justify-center"
             onClick={signInWithGoogle}
           >
             <img src="/google.svg" alt="Google Logo" className="w-4 h-4" />
-            <span className="mr-2 w-full">Continue with Google</span>
+            <span className="w-full mr-2">Continue with Google</span>
           </button>
         </div>
 
         <div className="text-center">
           <span>Already have an account?</span>
-          <a href="/login" className="text-blue-500 hover:underline ml-2">
+          <a href="/login" className="ml-2 text-blue-500 hover:underline">
             Sign In
           </a>
         </div>

@@ -22,9 +22,9 @@ const ForgotPassword = () => {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 w-full">
+    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-50">
       <Toaster />
-      <div className="max-w-md w-full p-6 bg-white shadow-lg rounded-lg flex flex-col items-center space-y-4">
+      <div className="flex flex-col items-center w-full max-w-md p-6 space-y-4 bg-white rounded-lg shadow-lg">
         <h2 className="text-3xl font-semibold text-center">Forgot Password</h2>
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700">
@@ -39,7 +39,7 @@ const ForgotPassword = () => {
             required
           />
         </div>
-        <div className="mb-4 flex justify-center">
+        <div className="flex justify-center mb-4">
           <button
             className="w-[250px] bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
             onClick={handleResetPassword}
@@ -49,7 +49,7 @@ const ForgotPassword = () => {
         </div>
         <div className="text-center">
           <span>Remember your password?</span>
-          <a href="/login" className="text-blue-500 hover:underline ml-2">
+          <a href="/login" className="ml-2 text-blue-500 hover:underline">
             Sign In
           </a>
         </div>

@@ -2,11 +2,12 @@ import { auth, googleProvider } from "../config/firebase.js";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut,
   onAuthStateChanged,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../config/firebase";
 
 export const Auth = () => {
   const [email, setEmail] = useState("");
@@ -18,8 +19,23 @@ export const Auth = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log("User signed in");
-        setUser(userCredential.user);
-        window.location.href = "/";
+
+        const user = userCredential.user;
+        setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          favorites: {},
+          locationPreferences: {},
+          applicationHistory: [],
+        })
+          .then(() => {
+            console.log("User Created!");
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 500);
+          })
+          .catch((error) => {
+            console.error("Error creating user profile:", error);
+          });
       })
       .catch((error) => {
         console.error("Error signing in:", error);
@@ -44,7 +60,7 @@ export const Auth = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser != null || '') {
+      if (currentUser != null || "") {
         console.log("User is signed in.");
         console.log(currentUser.email);
       } else {
