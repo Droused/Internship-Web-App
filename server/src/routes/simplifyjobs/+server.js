@@ -30,7 +30,7 @@ export const GET = async ({ request, url }) => {
 				// Extract the company name and link URL
 				const linkMatches = company.match(/\*\*\[(.*?)\]\((.*?)\)\*\*/);
 				if (linkMatches && linkMatches.length === 3) {
-					company = linkMatches[1]
+					company = linkMatches[1];
 				}
 			}
 
@@ -41,12 +41,20 @@ export const GET = async ({ request, url }) => {
 					: values[2]
 					? [values[2].trim()]
 					: [];
-
-			let applicationLink = values[3]
-				?.split('</a>')
-				.filter((element) => /alt="Apply"/.test(element))[0]
-				?.split('href=')[1]?.split('"')[1];
-
+			if(location.length>=4) {
+				location[0] = location[0].split("/summary>")[1]
+				location[location.length-1] = location[location.length-1].split("</details>")[0]
+			}
+					let applicationLink;
+			if (values[3] !== '🔒') {
+				applicationLink = values[3]
+					?.split('</a>')
+					.filter((element) => /alt="Apply"/.test(element))[0]
+					?.split('href=')[1]
+					?.split('"')[1];
+			} else {
+				applicationLink = null;
+			}
 			data.push({
 				company: company,
 				role: values[1],
