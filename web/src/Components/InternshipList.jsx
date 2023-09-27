@@ -5,13 +5,17 @@ import { useState } from "react";
 const InternshipList = ({ internships }) => {
   const [favorites, setFavorites] = useState([]);
 
-  const handleFavoriteClick = (internship) => {
-    if (favorites.includes(internship)) {
-      setFavorites(favorites.filter(fav => fav !== internship));
-    } else {
-      setFavorites([...favorites, internship]);
-    }
+  const handleFavoriteClick = (index, internship) => {
+    // var internshipObject = internships[index]
+    favorites.push(internship)
     console.log(favorites)
+    console.log(internship)
+    // if (favorites.includes(internship)) {
+    //   setFavorites(favorites.filter(fav => fav !== internship));
+    // } else {
+    //   setFavorites([...favorites, internship]);
+    // }
+    // console.log(favorites)
   };
 
 
@@ -50,10 +54,10 @@ const InternshipList = ({ internships }) => {
                       {internship.company}
                     </div>
                     <button
-                      onClick={() => handleFavoriteClick(internship)}
+                      onClick={() => handleFavoriteClick(index, internship)}
                       className="ml-2 focus:outline-none"
                     >
-                      {favorites.some((fav) => fav.id === internship.id) ? (
+                      {(favorites.includes(internship[index])) ? (
                         <FaStar className="text-yellow-500" />
                       ) : (
                         <FaRegStar className="text-gray-400 hover:text-yellow-500" />
