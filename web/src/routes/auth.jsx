@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
 export const Auth = () => {
@@ -17,26 +17,42 @@ export const Auth = () => {
 
   const signIn = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         console.log("User signed in");
 
         const user = userCredential.user;
-        setDoc(doc(db, "users", user.uid), {
-          email: user.email,
-          favorites: {},
-          locationPreferences: {},
-          applicationHistory: [],
-          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'
-        })
-          .then(() => {
-            console.log("User Created!");
-            setTimeout(() => {
-              window.location.href = "/";
-            }, 500);
-          })
-          .catch((error) => {
-            console.error("Error creating user profile:", error);
-          });
+        const userRef = doc(db, "users", user.uid);
+
+        // Check if user already exists in Firestore
+        const docSnap = await getDoc(userRef);
+
+        // If the user does not exist or the icon is empty, set the default icon
+        if (!docSnap.exists() || !docSnap.data().icon) {
+          await setDoc(
+            userRef,
+            {
+              email: user.email,
+              favorites: {},
+              locationPreferences: {},
+              applicationHistory: [],
+              icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png",
+            },
+            { merge: true }
+          )
+            .then(() => {
+              console.log("User Created!");
+              setTimeout(() => {
+                window.location.href = "/";
+              }, 500);
+            })
+            .catch((error) => {
+              console.error("Error creating user profile:", error);
+            });
+        } else {
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 500);
+        }
       })
       .catch((error) => {
         console.error("Error signing in:", error);

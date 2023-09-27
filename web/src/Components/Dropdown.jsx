@@ -41,7 +41,7 @@ const Dropdown = ({ isLoggedIn, onLogout }) => {
       <div>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex justify-center w-full rounded-md border-none shadow-none px-4 p-2 bg-transparent text-sm font-medium text-gray-700 "
+          className="inline-flex justify-center w-full p-2 px-4 text-sm font-medium text-gray-700 bg-transparent border-none rounded-md shadow-none "
           id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"
@@ -68,7 +68,7 @@ const Dropdown = ({ isLoggedIn, onLogout }) => {
                 <div className="">
                   <button
                     onClick={redirectProfile}
-                    className=" w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-300 hover:text-gray-900 flex items-center gap-5"
+                    className="flex items-center w-full gap-5 px-4 py-2 text-sm text-left text-gray-700 transition duration-300  hover:bg-gray-100 hover:text-gray-900"
                     role="menuItem"
                   >
                     <svg
@@ -89,7 +89,7 @@ const Dropdown = ({ isLoggedIn, onLogout }) => {
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-300 gap-5"
+                    className="flex items-center w-full gap-5 px-4 py-2 text-sm text-left text-gray-700 transition duration-300 hover:bg-gray-100"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +110,7 @@ const Dropdown = ({ isLoggedIn, onLogout }) => {
                 </div>
               </div>
             ) : (
-              <span className="block w-full text-left px-4 py-2 text-sm text-gray-700">
+              <span className="block w-full px-4 py-2 text-sm text-left text-gray-700">
                 Not Logged In
               </span>
             )}

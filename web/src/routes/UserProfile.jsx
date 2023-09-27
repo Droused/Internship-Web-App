@@ -1,13 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { FaUser, FaEnvelope, FaCog, FaHeart } from "react-icons/fa";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 
 const UserProfile = () => {
   const [userData, setUserData] = useState(null);
-
+  const storage = getStorage();
   const auth = getAuth();
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const storageRef = ref(storage, "users" + file.name);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.error("Upload failed:", error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          if (auth.currentUser) {
+            await setDoc(
+              doc(db, "users", auth.currentUser.uid),
+              {
+                icon: downloadURL,
+              },
+              { merge: true }
+            );
+          }
+        });
+      }
+    );
+  };
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const fetchData = async () => {
@@ -37,11 +74,24 @@ const UserProfile = () => {
   return (
     <div className="flex items-center justify-center w-full min-h-screen bg-gray-100">
       <div className="p-8 bg-white rounded-lg shadow-md w-96">
-        <div className="flex items-center justify-center mb-6">
+        <div className="relative flex items-center justify-center mb-6">
           <img
             className="w-24 h-24 rounded-full"
             src={userData.icon}
             alt="User Avatar"
+          />
+          <input
+            type="file"
+            onChange={handleFileChange}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              opacity: 0,
+              cursor: "pointer",
+            }}
           />
         </div>
         <div className="flex items-center mb-6 text-center">
