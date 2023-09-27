@@ -26,6 +26,7 @@ export const Auth = () => {
           favorites: {},
           locationPreferences: {},
           applicationHistory: [],
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'
         })
           .then(() => {
             console.log("User Created!");

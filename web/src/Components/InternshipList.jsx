@@ -1,5 +1,5 @@
 import React from "react";
-import { FaStar, FaRegStar } from "react-icons/fa"; // Importing Font Awesome Icons
+import { FaStar, FaRegStar } from "react-icons/fa";
 import { useState } from "react";
 
 const InternshipList = ({ internships }) => {

@@ -5,6 +5,7 @@ import { auth, googleProvider } from "../config/firebase.js";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { signOut } from "firebase/auth";
+import Dropdown from "../Components/Dropdown";
 
 const Main = () => {
   const [internships, setInternships] = useState([]);
@@ -18,12 +19,12 @@ const Main = () => {
       typeof internship.company === "string"
         ? internship.company.toLowerCase().includes(searchTerm.toLowerCase())
         : false;
-      const dateMatch =
+    const dateMatch =
       typeof internship.company === "string"
         ? internship.datePosted.toLowerCase().includes(searchTerm.toLowerCase())
         : false;
 
-    const locationMatch = internship.jobLocation.some(location =>
+    const locationMatch = internship.jobLocation.some((location) =>
       location.toLowerCase().includes(searchTerm.toLowerCase())
     );
     return locationMatch || companyMatch || dateMatch;
@@ -34,6 +35,12 @@ const Main = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const logoutUser = () => {
+    signOut(auth)
+      .then(() => {})
+      .catch((error) => {});
+  };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -70,6 +77,8 @@ const Main = () => {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
+        toast.error("Please log in!");
+        window.location.href = "/login";
       }
     });
 
@@ -92,6 +101,7 @@ const Main = () => {
             placeholder="Search Company, Location, Date..."
           />
         </div>
+        <Dropdown isLoggedIn={isLoggedIn} onLogout={() => signOut(auth)}></Dropdown>
       </div>
 
       <div className="relative mt-4">

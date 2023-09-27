@@ -40,7 +40,7 @@ const UserProfile = () => {
         <div className="flex items-center justify-center mb-6">
           <img
             className="w-24 h-24 rounded-full"
-            src="/img/avatar.jpg"
+            src={userData.icon}
             alt="User Avatar"
           />
         </div>
