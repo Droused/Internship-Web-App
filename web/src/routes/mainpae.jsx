@@ -7,7 +7,7 @@ import { toast, Toaster } from "react-hot-toast";
 import { signOut } from "firebase/auth";
 import Dropdown from "../Components/Dropdown";
 
-const Main = () => {
+const main = () => {
   const [internships, setInternships] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -130,4 +130,4 @@ const Main = () => {
     </div>
   );
 };
-export default Main;
+export default main;
