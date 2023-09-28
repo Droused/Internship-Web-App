@@ -51,7 +51,7 @@ const main = () => {
   };
 
   useEffect(() => {
-    const serverEndpoint = "http://localhost:5174/simplifyjobs";
+    const serverEndpoint = "https://internship-web-app-oeft-ahlruf3qr-droused.vercel.app/simplifyjobs";
 
     fetch(serverEndpoint)
       .then((response) => {
