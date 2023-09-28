@@ -9,6 +9,7 @@ import ForgotPassword from "./routes/forgotPasswordPage";
 import Register from "./routes/RegisterPage";
 import "./index.css";
 import Login from "./routes/auth";
+import Main from "./routes/mainpae";
 import UserProfile from "./routes/UserProfile";
 
 
