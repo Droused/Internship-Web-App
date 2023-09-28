@@ -1,23 +1,94 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { useState } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore"; // Import getDoc
+import { db } from "../config/firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const InternshipList = ({ internships }) => {
   const [favorites, setFavorites] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const auth = getAuth();
 
-  const handleFavoriteClick = (index, internship) => {
-    // var internshipObject = internships[index]
-    favorites.push(internship)
-    console.log(favorites)
-    console.log(internship)
-    // if (favorites.includes(internship)) {
-    //   setFavorites(favorites.filter(fav => fav !== internship));
-    // } else {
-    //   setFavorites([...favorites, internship]);
-    // }
-    // console.log(favorites)
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const fetchData = async () => {
+          try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+              setUserData(userDoc.data());
+            } else {
+              console.error("No such document!");
+            }
+          } catch (error) {
+            console.error("Error getting document:", error);
+          }
+        };
+        fetchData();
+      } else {
+        setUserData(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (userData && userData.uid) {
+      const fetchFavorites = async () => {
+        try {
+          const userDoc = await db.collection("users").doc(userData.uid).get();
+          if (userDoc.exists && userDoc.data().favorites) {
+            // Check if favorites exist
+            setFavorites(userDoc.data().favorites);
+          } else {
+            setFavorites([]); // Set to empty array if favorites do not exist
+          }
+        } catch (error) {
+          console.error("Error fetching favorites: ", error);
+        }
+      };
+
+      fetchFavorites();
+    }
+  }, [userData]);
+
+  const handleFavoriteClick = async (internship) => {
+    try {
+      let updatedFavorites;
+      if (favorites.includes(internship)) {
+        updatedFavorites = favorites.filter((fav) => fav !== internship);
+      } else {
+        updatedFavorites = [...favorites, internship];
+      }
+      await db
+        .collection("users")
+        .doc(userData.uid)
+        .set({ favorites: updatedFavorites }, { merge: true });
+
+      setFavorites(updatedFavorites);
+    } catch (error) {
+      console.error("Error updating favorites: ", error);
+    }
   };
-
+  if (userData) {
+    const fetchData = async () => {
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        } else {
+          await setDoc(userDocRef, { favorites: [] });
+          setUserData({ favorites: [] });
+        }
+      } catch (error) {
+        console.error("Error getting document:", error);
+      }
+    };
+    fetchData();
+  }
 
   return (
     <div className="container p-4 mx-auto">
@@ -54,10 +125,10 @@ const InternshipList = ({ internships }) => {
                       {internship.company}
                     </div>
                     <button
-                      onClick={() => handleFavoriteClick(index, internship)}
+                      onClick={() => handleFavoriteClick(internship)}
                       className="ml-2 focus:outline-none"
                     >
-                      {(favorites.includes(internship[index])) ? (
+                      {favorites.includes(internship) ? (
                         <FaStar className="text-yellow-500" />
                       ) : (
                         <FaRegStar className="text-gray-400 hover:text-yellow-500" />
