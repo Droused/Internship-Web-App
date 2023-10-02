@@ -7,7 +7,7 @@ import { toast, Toaster } from "react-hot-toast";
 import { signOut } from "firebase/auth";
 import Dropdown from "../Components/Dropdown";
 
-const main = () => {
+export const Main = () => {
   const [internships, setInternships] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,9 +51,10 @@ const main = () => {
   };
 
   useEffect(() => {
-    const serverEndpoint = "https://internship-web-app-oeft-ahlruf3qr-droused.vercel.app/simplifyjobs";
+    const serverEndpoint = "https://proxy.jasanpreetn9.workers.dev/?https://internship-web-app-oeft-ahlruf3qr-droused.vercel.app/simplifyjobs";
 
     fetch(serverEndpoint)
+
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data.");
@@ -77,7 +78,6 @@ const main = () => {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
-        toast.error("Please log in!");
         window.location.href = "/login";
       }
     });
@@ -130,4 +130,4 @@ const main = () => {
     </div>
   );
 };
-export default main;
+export default Main;
