@@ -78,7 +78,6 @@ export const Main = () => {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
-        window.location.href = "/login";
       }
     });
 
