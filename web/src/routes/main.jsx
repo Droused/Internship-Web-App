@@ -86,17 +86,17 @@ export const Main = () => {
 
   return (
     <div className="container p-2 mx-auto sm:p-4 md:p-6">
-      <Toaster></Toaster>
-      <div className="px-2 py-3 rounded-[25px] shadow-md bg-blue-500 flex flex-col sm:flex-row gap-5 justify-center items-center">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white ml-0 sm:ml-[80px]">
+      <Toaster />
+      <div className="px-2 py-3 mb-4 rounded-[25px] shadow-md bg-blue-500 flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center items-center sm:bg-opacity-100">
+        <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-2 sm:mb-0 sm:ml-[80px] sm:block hidden">
           InternshipsForYou
         </h1>
-        <div className="flex justify-center w-full p-0 m-0">
+        <div className="flex justify-center w-full pt-2 sm:pt-0">
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="h-[40px] sm:h-[50px] md:h-[60px] p-2 transition duration-300 border rounded-[15px] shadow-md w-full sm:w-3/4 md:w-1/2 lg:w-1/2 xl:w-[500px] focus:outline-none focus:border-slate-600 focus:ring focus:ring-slate-200 focus:ring-opacity-50"
+            className="h-[35px] sm:h-[50px] md:h-[60px] p-2 transition duration-300 border rounded-[15px] shadow-md w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-[500px] focus:outline-none focus:border-slate-600 focus:ring focus:ring-slate-200 focus:ring-opacity-50"
             placeholder="Search Company, Location, Date..."
           />
         </div>
@@ -104,18 +104,19 @@ export const Main = () => {
           <Dropdown
             isLoggedIn={isLoggedIn}
             onLogout={() => signOut(auth)}
-          ></Dropdown>
+            className="w-full mt-2 sm:w-auto sm:mt-0"
+          />
         ) : (
-          <ButtonLog>Login</ButtonLog>
+          <ButtonLog className="w-full mt-2 sm:w-auto sm:mt-0">Login</ButtonLog>
         )}
       </div>
 
       <div className="relative mt-4">
-        <div className="absolute top-2 right-1 sm:top-[10px] sm:right-6 flex space-x-1 sm:space-x-2">
+        <div className="flex justify-center space-x-1 sm:space-x-2 lg:justify-end">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
-            className="px-1 sm:px-2 py-0.5 sm:py-1 text-xs sm:text-sm bg-gray-200 rounded"
+            className="px-3 py-2 text-xs bg-gray-200 rounded sm:text-sm"
           >
             Previous
           </button>
@@ -125,7 +126,7 @@ export const Main = () => {
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className="px-1 sm:px-2 py-0.5 sm:py-1 text-xs sm:text-sm bg-gray-200 rounded"
+            className="px-3 py-2 text-xs bg-gray-200 rounded sm:text-sm"
           >
             Next
           </button>

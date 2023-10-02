@@ -47,9 +47,9 @@ const InternshipList = ({ internships }) => {
   };
 
   return (
-    <div className="container p-4 mx-auto">
+    <div className="container px-4 mx-auto md:p-8">
       <Toaster />
-      <h1 className="mb-4 text-3xl font-semibold text-center text-blue-600">
+      <h1 className="mb-4 text-3xl font-semibold text-center text-blue-600 md:text-4xl">
         Recent Listings
       </h1>
       <div className="overflow-x-auto">
@@ -76,9 +76,9 @@ const InternshipList = ({ internships }) => {
                 key={index}
                 className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
               >
-                <td className="px-6 py-4 border-b border-gray-300">
+                <td className="px-4 py-2 border-b border-gray-300 md:px-6 md:py-4">
                   <div className="flex items-center">
-                    <div className="text-sm font-semibold text-gray-900">
+                    <div className="text-sm font-semibold text-gray-900 md:text-base">
                       {internship.company}
                     </div>
                     <button
@@ -92,7 +92,9 @@ const InternshipList = ({ internships }) => {
                       )}
                     </button>
                   </div>
-                  <div className="text-xs text-gray-500">{internship.role}</div>
+                  <div className="text-xs text-gray-500 md:text-sm">
+                    {internship.role}
+                  </div>
                 </td>
                 <td className="px-6 py-4 border-b border-gray-300">
                   <div className="text-sm font-semibold text-gray-900">
