@@ -44,22 +44,6 @@ const InternshipList = ({ internships }) => {
     } else {
       toast.error("Please Login To Favorite Internships!");
     }
-  const auth = getAuth();
-
-  const handleFavoriteClick = async (internship) => {
-    try {
-      let updatedFavorites;
-      if (favorites.includes(internship)) {
-        updatedFavorites = favorites.filter((fav) => fav !== internship);
-        toast.error(`Removed ${internship.company} From Favorites`)
-      } else {
-        updatedFavorites = [...favorites, internship];
-        toast.success("Added " + internship.company + " to your favorites!");
-      }
-      setFavorites(updatedFavorites);
-    } catch (error) {
-      console.error("Error updating favorites: ", error);
-    }
   };
 
   return (
@@ -145,5 +129,4 @@ const InternshipList = ({ internships }) => {
     </div>
   );
 };
-
 export default InternshipList;
