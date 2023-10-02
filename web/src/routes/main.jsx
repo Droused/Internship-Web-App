@@ -51,10 +51,10 @@ export const Main = () => {
   };
 
   useEffect(() => {
-    const serverEndpoint = "https://proxy.jasanpreetn9.workers.dev/?https://internship-web-app-oeft-ahlruf3qr-droused.vercel.app/simplifyjobs";
+    const serverEndpoint =
+      "https://proxy.jasanpreetn9.workers.dev/?https://internship-web-app-oeft-ahlruf3qr-droused.vercel.app/simplifyjobs";
 
     fetch(serverEndpoint)
-
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data.");
@@ -78,7 +78,6 @@ export const Main = () => {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
-        window.location.href = "/login";
       }
     });
 
@@ -101,7 +100,14 @@ export const Main = () => {
             placeholder="Search Company, Location, Date..."
           />
         </div>
-        <Dropdown isLoggedIn={isLoggedIn} onLogout={() => signOut(auth)}></Dropdown>
+        {isLoggedIn ? (
+          <Dropdown
+            isLoggedIn={isLoggedIn}
+            onLogout={() => signOut(auth)}
+          ></Dropdown>
+        ) : (
+          <ButtonLog>Login</ButtonLog>
+        )}
       </div>
 
       <div className="relative mt-4">
