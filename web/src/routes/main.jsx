@@ -6,6 +6,7 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import { signOut } from "firebase/auth";
 import Dropdown from "../Components/Dropdown";
+import SearchBar from "../Components/Searchbar";
 
 export const Main = () => {
   const [internships, setInternships] = useState([]);
@@ -87,17 +88,14 @@ export const Main = () => {
   return (
     <div className="container p-2 mx-auto sm:p-4 md:p-6">
       <Toaster />
-      <div className="px-2 py-3 mb-4 rounded-[25px] shadow-md bg-blue-500 flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center items-center sm:bg-opacity-100">
-        <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-2 sm:mb-0 sm:ml-[80px] sm:block hidden">
+      <div className="flex flex-col items-center justify-center gap-3 p-4 mb-4 bg-blue-500 rounded-lg shadow-md sm:flex-row sm:gap-5">
+        <h1 className="hidden mb-2 text-2xl font-bold text-center text-white sm:text-3xl md:text-4xl sm:mb-0 sm:ml-20 sm:block">
           InternshipsForYou
         </h1>
         <div className="flex justify-center w-full pt-2 sm:pt-0">
-          <input
-            type="text"
+          <SearchBar
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="h-[35px] sm:h-[50px] md:h-[60px] p-2 transition duration-300 border rounded-[15px] shadow-md w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-[500px] focus:outline-none focus:border-slate-600 focus:ring focus:ring-slate-200 focus:ring-opacity-50"
-            placeholder="Search Company, Location, Date..."
           />
         </div>
         {isLoggedIn ? (
@@ -112,21 +110,21 @@ export const Main = () => {
       </div>
 
       <div className="relative mt-4">
-        <div className="flex justify-center space-x-1 sm:space-x-2 lg:justify-end">
+        <div className="flex items-center justify-center px-4 mb-4 space-x-2 sm:justify-between sm:px-0 sm:space-x-0">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
-            className="px-3 py-2 text-xs bg-gray-200 rounded sm:text-sm"
+            className="px-4 py-2 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
-          <span className="self-center text-xs sm:text-sm">
+          <span className="text-sm sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
             {currentPage} / {totalPages}
           </span>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className="px-3 py-2 text-xs bg-gray-200 rounded sm:text-sm"
+            className="px-4 py-2 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next
           </button>

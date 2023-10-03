@@ -1,9 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Auth } from "./routes/auth";
 import ForgotPassword from "./routes/forgotPasswordPage";
 import Register from "./routes/RegisterPage";
@@ -12,38 +9,27 @@ import Login from "./routes/auth";
 import Main from "./routes/main";
 import UserProfile from "./routes/UserProfile";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Main />
-    )
+    element: <Main />,
   },
   {
     path: "/login",
-    element: (
-      <Login />
-    )
+    element: <Login />,
   },
   {
     path: "/register",
-    element: (
-      <Register />
-    )
+    element: <Register />,
   },
   {
     path: "/forgot-password",
-    element:(
-      <ForgotPassword />
-    )
+    element: <ForgotPassword />,
   },
   {
     path: "/profile",
-    element: (
-      <UserProfile />
-    )
-  }
+    element: <UserProfile />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
