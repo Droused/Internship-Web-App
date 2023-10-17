@@ -48,7 +48,7 @@ const Dropdown = ({ isLoggedIn, onLogout }) => {
           type="button"
         >
           {userData ? (
-            <img src={userData.icon} className="w-[100px]"></img>
+            <img src={userData.icon} className="w-[40px]"></img>
           ) : (
             ""
           )}

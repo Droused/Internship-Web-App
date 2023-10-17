@@ -383,3 +383,17 @@ i {
   justify-content: center;
   width: 100%;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Add the animation utility */
+.animate-fadeIn {
+  animation: fadeIn 1s ease-in-out;
+}

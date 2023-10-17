@@ -7,6 +7,7 @@ import { toast, Toaster } from "react-hot-toast";
 import { signOut } from "firebase/auth";
 import Dropdown from "../Components/Dropdown";
 import SearchBar from "../Components/Searchbar";
+import ContactUs from "../Components/EmailSender";
 
 export const Main = () => {
   const [internships, setInternships] = useState([]);
@@ -14,6 +15,10 @@ export const Main = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
+  const [todaysInternships, setTodaysInternships] = useState([]);
+
+  const SERVER_ENDPOINT =
+    "https://proxy.jasanpreetn9.workers.dev/?https://internship-web-app-oeft-ahlruf3qr-droused.vercel.app/simplifyjobs";
 
   const filteredInternships = internships.filter((internship) => {
     const companyMatch =
@@ -64,6 +69,7 @@ export const Main = () => {
       })
       .then((data) => {
         setInternships(data);
+
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -71,10 +77,48 @@ export const Main = () => {
   }, []);
 
   useEffect(() => {
+    const today = new Date();
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const formattedDate = `${monthNames[today.getMonth()]} ${today
+      .getDate()
+      .toString()
+      .padStart(2, "0")}`;
+
+    // Assuming internship is an array of objects with date properties
+    const todaysItems = internships.filter(
+      (item) => item.datePosted === formattedDate
+    );
+    if (todaysItems.length > 0) {
+      setTodaysInternships((prevInternships) => {
+        // Check if the items are already in the state to avoid duplicates
+        const newInternships = todaysItems.filter(
+          (item) => !prevInternships.some((prevItem) => prevItem.id === item.id)
+        );
+        return [...prevInternships, ...newInternships];
+      });
+    }
+  }, [internships]);
+
+  useEffect(() => {
+  }, [todaysInternships]);
+
+  useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("User logged in as " + user.email);
         toast.success("Logged in as " + user.email);
         setIsLoggedIn(true);
       } else {
@@ -86,52 +130,54 @@ export const Main = () => {
   }, []);
 
   return (
-    <div className="container p-2 mx-auto sm:p-4 md:p-6">
+    <div className="container relative p-4 mx-auto md:p-6">
       <Toaster />
-      <div className="flex flex-col items-center justify-center gap-3 p-4 mb-4 bg-blue-500 rounded-lg shadow-md sm:flex-row sm:gap-5">
-        <h1 className="hidden mb-2 text-2xl font-bold text-center text-white sm:text-3xl md:text-4xl sm:mb-0 sm:ml-20 sm:block">
-          InternshipsForYou
-        </h1>
-        <div className="flex justify-center w-full pt-2 sm:pt-0">
+
+      <div className="flex items-center justify-between p-6 rounded-lg shadow-lg bg-gradient-to-r from-blue-600 to-blue-900">
+        <div className="flex flex-col items-center space-x-6">
+          <h1 className="text-3xl font-bold text-white">InternshipsForYou</h1>
+          <p className="text-sm text-gray-300">Software Engineering Internships Made For You</p>
+        </div>
+
+        <div className="absolute">
           <SearchBar
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search internships, companies, locations..."
           />
         </div>
-        {isLoggedIn ? (
-          <Dropdown
-            isLoggedIn={isLoggedIn}
-            onLogout={() => signOut(auth)}
-            className="w-full mt-2 sm:w-auto sm:mt-0"
-          />
-        ) : (
-          <ButtonLog className="w-full mt-2 sm:w-auto sm:mt-0">Login</ButtonLog>
-        )}
+
+        <div className="space-x-4">
+          {isLoggedIn ? (
+            <Dropdown isLoggedIn={isLoggedIn} onLogout={() => signOut(auth)} />
+          ) : (
+            <ButtonLog className="px-4 py-2 text-white transition bg-transparent border border-white rounded-full hover:bg-white hover:text-blue-900">
+              Login
+            </ButtonLog>
+          )}
+        </div>
       </div>
 
-      <div className="relative mt-4">
-        <div className="flex items-center justify-center px-4 mb-4 space-x-2 sm:justify-between sm:px-0 sm:space-x-0">
+      <div className="mt-6">
+        <InternshipList internships={currentItems} />
+        <div className="flex justify-end gap-5 mx-10 mt-4 z-100">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
-            className="px-4 py-2 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
-          <span className="text-sm sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
-            {currentPage} / {totalPages}
-          </span>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next
           </button>
         </div>
-
-        <InternshipList internships={currentItems} />
       </div>
+      <ContactUs message={todaysInternships}></ContactUs>
     </div>
   );
 };
